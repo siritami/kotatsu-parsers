@@ -286,6 +286,8 @@ internal class TuSachXinhXinhParser(context: MangaLoaderContext) :
 
 		private val SMALL_THUMBNAIL_REGEX = Regex("-150x150(\\.[a-zA-Z]+)$")
 
+		private val CHAPTER_REGEX = Regex("Chap\\s*(\\d+(?:\\.\\d+)?)", RegexOption.IGNORE_CASE)
+
 		private val DATE_FORMAT by lazy {
 			SimpleDateFormat("dd/MM/yy", Locale.ROOT).apply {
 				timeZone = TimeZone.getTimeZone("Asia/Ho_Chi_Minh")
