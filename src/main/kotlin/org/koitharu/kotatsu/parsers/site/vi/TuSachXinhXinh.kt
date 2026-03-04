@@ -123,7 +123,7 @@ internal class TuSachXinhXinh(context: MangaLoaderContext) :
 					publicUrl = relativeUrl.toAbsoluteUrl(domain),
 					rating = RATING_UNKNOWN,
 					contentRating = null,
-					coverUrl = element.selectFirst("img.list-left-img")?.lazyImgUrl(),
+					coverUrl = element.selectFirst("img.list-left-img")?.src(),
 					tags = emptySet(),
 					state = null,
 					authors = emptySet(),
@@ -152,7 +152,7 @@ internal class TuSachXinhXinh(context: MangaLoaderContext) :
 					publicUrl = relativeUrl.toAbsoluteUrl(domain),
 					rating = RATING_UNKNOWN,
 					contentRating = null,
-					coverUrl = element.selectFirst("img")?.lazyImgUrl(),
+					coverUrl = element.selectFirst("img")?.src(),
 					tags = emptySet(),
 					state = null,
 					authors = emptySet(),
@@ -162,13 +162,6 @@ internal class TuSachXinhXinh(context: MangaLoaderContext) :
 					source = source,
 				)
 			}
-	}
-
-	private fun Element.lazyImgUrl(): String? {
-		val url = attrOrNull("data-lazy-src")?.ifEmpty { null }
-			?: attrOrNull("src")?.takeUnless { it.startsWith("data:") }?.ifEmpty { null }
-			?: return null
-		return url.replace(SMALL_THUMBNAIL_REGEX, "$1")
 	}
 
 	override suspend fun getDetails(manga: Manga): Manga {
