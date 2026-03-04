@@ -70,7 +70,7 @@ internal class TuSachXinhXinhParser(context: MangaLoaderContext) :
 						chapters = null,
 						source = source,
 					)
-				}
+				}.distinctBy { it.url }
 		}
 
 		// Filter by tag
