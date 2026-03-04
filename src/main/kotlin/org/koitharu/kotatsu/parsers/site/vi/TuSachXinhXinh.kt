@@ -8,7 +8,6 @@ import org.koitharu.kotatsu.parsers.MangaSourceParser
 import org.koitharu.kotatsu.parsers.config.ConfigKey
 import org.koitharu.kotatsu.parsers.core.PagedMangaParser
 import org.koitharu.kotatsu.parsers.model.*
-import org.koitharu.kotatsu.parsers.network.OkHttpWebClient
 import org.koitharu.kotatsu.parsers.util.*
 import org.koitharu.kotatsu.parsers.util.json.mapJSONNotNull
 import java.text.SimpleDateFormat
@@ -18,20 +17,12 @@ import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.PBEKeySpec
 import javax.crypto.spec.SecretKeySpec
-import kotlin.time.Duration.Companion.seconds
 
 @MangaSourceParser("TUSACHXINHXINH", "Tủ Sách Xinh Xinh", "vi", ContentType.MANGA)
 internal class TuSachXinhXinhParser(context: MangaLoaderContext) :
 	PagedMangaParser(context, MangaParserSource.TUSACHXINHXINH, 36) {
 
 	override val configKeyDomain = ConfigKey.Domain("tusachxinhxinh12.online")
-
-	override val webClient = OkHttpWebClient(
-		context.httpClient.newBuilder()
-			.rateLimit(3, 60.seconds)
-			.build(),
-		source,
-	)
 
 	override val availableSortOrders: Set<SortOrder> =
 		EnumSet.of(SortOrder.UPDATED, SortOrder.POPULARITY)
