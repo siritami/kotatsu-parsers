@@ -186,10 +186,12 @@ internal class TuSachXinhXinhParser(context: MangaLoaderContext) :
 				.mapChapters(reversed = true) { index, element ->
 					val url = element.attrAsRelativeUrl("href")
 					val dateText = element.closest("tr")?.selectFirst("td.hidden-xs.hidden-sm")?.text()
+					val rawName = element.text()
+					val chapMatch = CHAPTER_REGEX.find(rawName)
 					MangaChapter(
 						id = generateUid(url),
-						title = element.selectFirst("span")?.textOrNull(),
-						number = index + 1f,
+						title = chapMatch?.value?.trim(),
+						number = chapMatch?.groupValues?.get(1)?.toFloatOrNull() ?: (index + 1f),
 						volume = 0,
 						url = url,
 						scanlator = null,
