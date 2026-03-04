@@ -39,8 +39,8 @@ internal class TuSachXinhXinhParser(context: MangaLoaderContext) :
 	)
 
 	private suspend fun fetchTags(): Set<MangaTag> {
-		return webClient.httpGet("/so-do-trang".toAbsoluteUrl(domain)).parseHtml()
-			.select("ul.menu-theloai a[href*=/the-loai/]")
+		return webClient.httpGet("https://$domain").parseHtml()
+			.select("#nav-tags .tags a[href*=/the-loai/]")
 			.mapToSet(::parseTag)
 	}
 
