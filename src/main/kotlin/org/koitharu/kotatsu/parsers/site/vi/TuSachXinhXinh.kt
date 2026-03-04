@@ -12,6 +12,7 @@ import org.koitharu.kotatsu.parsers.model.*
 import org.koitharu.kotatsu.parsers.util.*
 import org.koitharu.kotatsu.parsers.util.json.mapJSONNotNull
 import java.text.SimpleDateFormat
+import java.text.DateFormat
 import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.SecretKeyFactory
@@ -20,7 +21,7 @@ import javax.crypto.spec.PBEKeySpec
 import javax.crypto.spec.SecretKeySpec
 
 @MangaSourceParser("TUSACHXINHXINH", "Tủ Sách Xinh Xinh", "vi", ContentType.MANGA)
-internal class TuSachXinhXinhParser(context: MangaLoaderContext) :
+internal class TuSachXinhXinh(context: MangaLoaderContext) :
 	PagedMangaParser(context, MangaParserSource.TUSACHXINHXINH, 36) {
 
 	override val configKeyDomain: ConfigKey.Domain
@@ -195,7 +196,7 @@ internal class TuSachXinhXinhParser(context: MangaLoaderContext) :
 						volume = 0,
 						url = url,
 						scanlator = null,
-						uploadDate = parseChapterDate(dateText),
+						uploadDate = dateFormat.parseSafe(dateText),
 						branch = null,
 						source = source,
 					)
@@ -264,14 +265,7 @@ internal class TuSachXinhXinhParser(context: MangaLoaderContext) :
 		return parseLatestPage(doc)
 	}
 
-	private fun parseChapterDate(dateStr: String?): Long {
-		if (dateStr.isNullOrBlank()) return 0L
-		return try {
-			DATE_FORMAT.parse(dateStr)?.time ?: 0L
-		} catch (_: Exception) {
-			0L
-		}
-	}
+
 
 	private fun String.decodeHex(): ByteArray {
 		check(length % 2 == 0) { "Must have an even length" }
@@ -288,10 +282,8 @@ internal class TuSachXinhXinhParser(context: MangaLoaderContext) :
 
 		private val CHAPTER_REGEX = Regex("Chap\\s*(\\d+(?:\\.\\d+)?)", RegexOption.IGNORE_CASE)
 
-		private val DATE_FORMAT by lazy {
-			SimpleDateFormat("dd/MM/yy", Locale.ROOT).apply {
-				timeZone = TimeZone.getTimeZone("Asia/Ho_Chi_Minh")
-			}
+		private val dateFormat: DateFormat = SimpleDateFormat("dd/MM/yy", Locale.ROOT).apply {
+			timeZone = TimeZone.getTimeZone("Asia/Ho_Chi_Minh")
 		}
 	}
 }
